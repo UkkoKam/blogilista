@@ -1,0 +1,8 @@
+POST localhost:3001/api/blogs
+Content-Type: application/json
+
+{
+    "title": "Using VSCode RESTClient",
+    "author": "Ukko Kamula",
+    "url": "https://www.miniclip.com"
+}
