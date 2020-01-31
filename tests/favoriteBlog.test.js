@@ -64,8 +64,21 @@ describe('favourite blog', () => {
         }
     ]
     test('when list has many blogs', () => {
-        const result = listHelper.favouriteBlog(blogs)
+
+        const blogsModified = blogs.map(item => {
+            return {
+                title: item.title,
+                author: item.author,
+                likes: item.likes
+            }
+        })
+
+        const result = listHelper.favouriteBlog(blogsModified)
         console.log(result)
-        expect(result).toEqual(12)
+        expect(result).toEqual({
+        title: 'Canonical string reduction',
+        author: 'Edsger W. Dijkstra',
+        likes: 12
+        })
     })
 })

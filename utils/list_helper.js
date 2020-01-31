@@ -16,6 +16,12 @@ const favouriteBlog = (blogs) => {
     }, {title: '', likes: 0, author: ''})
 }
 
+const mostBlogs = (blogs) => {
+    return blogs.reduce((accumulator, currentValue) => {
+            
+    })
+}
+
 
 module.exports = {
     dummy,
