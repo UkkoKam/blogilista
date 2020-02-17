@@ -26,7 +26,7 @@ beforeEach(async () => {
     let blogObject = new Blog(initialBlogs[0])
     await blogObject.save()
 
-    blogObject = new Blog(initialblogs[0])
+    blogObject = new Blog(initialBlogs[1])
     await blogObject.save()
 })
 
@@ -40,7 +40,7 @@ test('blogs are returned as json', async () => {
 test('HTTP GET returns correct amount of blogs', async () => {
     const response = await api.get('/api/blogs')
 
-    expect(response.body.length).toBe(3)
+    expect(response.body.length).toBe(2)
 })
 
 test('a valid blog can be added', async () => {
