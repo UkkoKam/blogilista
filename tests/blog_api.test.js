@@ -64,6 +64,12 @@ test('a valid blog can be added', async () => {
     expect(response.body.length).toBe(initialBlogs.length + 1)
 })
 
+test('Blogs are returned in correct format', async () => {
+    const response = await api.get('/api/blogs')
+
+    expect(response.body[0].id).toBeDefined()
+})
+
 
 afterAll(() => {
     mongoose.connection.close()
