@@ -19,15 +19,21 @@ blogsRouter.post('/',  async (request, response) => {
       title: body.title,
       author: body.author,
       url: body.url,
-      likes: body.likes  
+      likes: body.likes ? body.likes : 0
   })
 
-  try {
-    const savedBlog = await blog.save()
-    response.json(savedBlog.toJSON())
-  } catch(exception) {
-    next(exception)
+  if (blog.title && blog.url) {
+    try {
+      const savedBlog = await blog.save()
+      response.json(savedBlog.toJSON())
+    } catch(exception) {
+      next(exception)
+    }
+  } else {
+    return response.status(400).json({ error: 'url and title must be present'})
   }
+
+  
 })
 
 module.exports = blogsRouter

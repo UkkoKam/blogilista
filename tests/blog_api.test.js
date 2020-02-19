@@ -70,6 +70,46 @@ test('Blogs are returned in correct format', async () => {
     expect(response.body[0].id).toBeDefined()
 })
 
+test('Post requests with no defined likes sets the likes at zero', async () => {
+    const newBlog = {
+        title: 'Asyncin testaaminen',
+        author: 'Asyncin keksijä',
+        url: 'https://www.mozilla.com'   
+    }
+    
+    await api
+        .post('/api/blogs')
+        .send(newBlog)
+        .expect(200)
+        .expect('Content-Type', /application\/json/)
+        
+    const response = await api.get('/api/blogs')
+
+    expect(response.body[2].likes).toBe(0)
+})
+
+test('Post request with no title or url receives 400 as response', async () => {
+    const newBlog1 = {
+        author: 'Asyncin keksijä',
+        url: 'https://www.mozilla.com'   
+    }
+
+    const newBlog2 = {
+        title: 'Asyncin testaaminen',
+        author: 'Asyncin keksijä' 
+    }
+
+    await api
+        .post('/api/blogs')
+        .send(newBlog1)
+        .expect(400)
+
+    await api
+        .post('/api/blogs')
+        .send(newBlog2)
+        .expect(400)
+})
+
 
 
 afterAll(() => {
