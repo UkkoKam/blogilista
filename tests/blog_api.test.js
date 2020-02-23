@@ -61,8 +61,6 @@ test('a valid blog can be added', async () => {
 
     const response = await api.get('/api/blogs')
 
-    const contents = response.body.map(r => r.content)
-
     expect(response.body.length).toBe(initialBlogs.length + 1)
 })
 
@@ -90,57 +88,8 @@ test('Post requests with no defined likes sets the likes at zero', async () => {
     expect(response.body[2].likes).toBe(0)
 })
 
-test('Post request with no title or url receives 400 as response', async () => {
-    const newBlog1 = {
-        author: 'Asyncin keksijä',
-        url: 'https://www.mozilla.com'   
-    }
 
-    const newBlog2 = {
-        title: 'Asyncin testaaminen',
-        author: 'Asyncin keksijä' 
-    }
 
-    await api
-        .post('/api/blogs')
-        .send(newBlog1)
-        .expect(400)
-
-    await api
-        .post('/api/blogs')
-        .send(newBlog2)
-        .expect(400)
-})
-
-describe('when there is initially one user at db', () => {
-    beforeEach(async () => {
-        await User.deleteMany({})
-        const user = new User({username: 'root', password: 'sekred'})
-        await user.save()
-    })
-
-    test('creation succeeds with a fresh username', async () => {
-        const usersAtStart = await helper.usersInDb()
-
-        const newUser = {
-            username: 'ukkokam',
-            name: 'Ukko Kamula',
-            password: 'salainen'
-        }
-
-        await api
-            .post('/api/users')
-            .send(newUser)
-            .expect(200)
-            .expect('Content-Type', /application\/json/)
-
-        const usersAtEnd = await helper.usersInDb()
-        expect(usersAtEnd.length).toBe(usersAtStart.length + 1)
-
-        const usernames = usersAtEnd.map(u => u.username)
-        expect(usernames).toContain(newUser.username)
-    })
-})
 
 
 

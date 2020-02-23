@@ -1,9 +1,17 @@
 const mongoose = require('mongoose')
+const uniqueValidator = require('mongoose-unique-validator')
 
 const userSchema = mongoose.Schema({
-    username: String,
+    username: {
+        type: String,
+        unique: true,
+        minlength: 3
+    },
     name: String,
-    passwordHash: String,
+    passwordHash: {
+        type: String,
+        minlength: 3
+    },
     blogs: [
         {
             type: mongoose.Schema.Types.ObjectID,
@@ -12,15 +20,18 @@ const userSchema = mongoose.Schema({
     ],
 })
 
+
+userSchema.plugin(uniqueValidator, {message: 'is already taken'})
+
 userSchema.set('toJSON', {
-    transfrom: (document, returnedObject) => {
-        returnedObject.id = reqturnedObject._id.toString()
-        delete returnedObject._id
-        delete returnedObject.__id
-        // salasanaa EI paljasteta
-        delete returnedObject.passwordHash
+    transform: (document, returnedObject) => {
+      returnedObject.id = returnedObject._id.toString()
+      delete returnedObject._id
+      delete returnedObject.__v
+      // the passwordHash should not be revealed
+      delete returnedObject.passwordHash
     }
-})
+  })
 
 const User = mongoose.model('User', userSchema)
 
