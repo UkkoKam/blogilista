@@ -52,7 +52,11 @@ blogsRouter.put('/', async (request, response, next) => {
     title: body.title,
     author: body.author,
     url: body.url,
-    likes: body.likes ? body.likes : 0
+    likes: body.likes ? body.likes : 0,
+    user: {
+     type: mongoose.Schema.Types.ObjectId,
+     ref: 'User'
+    }
   })
 
   Blog.findByIdAndUpdate(request.params.id, blog, {new: true})
