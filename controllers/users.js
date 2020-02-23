@@ -4,13 +4,10 @@ const User = require('../models/user')
 const helper = require('../tests/test_helper')
 
 usersRouter.get('/', async (request, response) => {
-    try {
-        const users = await User.find({})
-        response.json(users.map(u => u.toJSON()))    
-    } catch (exception) {
-        next(exception)
-    }
-    
+    const users = await User
+        .find({}).populate('blogs')
+
+    response.json(users.map(u => u.toJSON()))
   })
 
 usersRouter.post('/', async (request, response, next) => {
