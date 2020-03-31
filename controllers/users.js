@@ -10,6 +10,12 @@ usersRouter.get('/', async (request, response) => {
     response.json(users.map(u => u.toJSON()))
   })
 
+usersRouter.get('/:id', async (request, response) => {
+    
+})
+
+
+// Tällä post pyynnöllä käyttäjän luominen, EI kirjautuminen
 usersRouter.post('/', async (request, response, next) => {
     try {
         

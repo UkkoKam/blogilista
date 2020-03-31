@@ -22,6 +22,16 @@ blogsRouter.get('/', async (request, response, next) => {
   
 })
 
+blogsRouter.get('/:id', async (request, response, next) => {
+  try {
+    const blogsToGet = await Blog.findById(request.params.id)
+
+    response.json(blogsToGet.toJSON())
+  } catch (exception) {
+    console.log(exception)
+  }
+})
+
 blogsRouter.post('/',  async (request, response) => {
   const body = request.body
 
@@ -40,7 +50,8 @@ blogsRouter.post('/',  async (request, response) => {
       author: body.author,
       url: body.url,
       likes: body.likes ? body.likes : 0,
-      user: user.id
+      userId: user.id,
+      userName: user.name
   })
   
   const savedBlog = await blog.save()
@@ -61,26 +72,25 @@ blogsRouter.delete('/:id', async (request, response) => {
   }
 })
 
-blogsRouter.put('/', async (request, response, next) => {
-  const body = request.body
+blogsRouter.put('/:id', (request, response) => {
+  
+    const body = request.body
 
-  const blog = new Blog({
-    title: body.title,
-    author: body.author,
-    url: body.url,
-    likes: body.likes ? body.likes : 0,
-    user: {
-     type: mongoose.Schema.Types.ObjectId,
-     ref: 'User'
-    }
-  })
-
-  Blog.findByIdAndUpdate(request.params.id, blog, {new: true})
-    .then(updatedBlog => {
-      response.json(updatedBlog.toJSON())
+    const blog = ({
+      title: body.title,
+      author: body.author,
+      url: body.url,
+      likes: body.likes,
+      userId: body.userId,
+      userName: body.userName
     })
-    .catch(error)
     
+    Blog.findByIdAndUpdate(request.params.id, blog)
+      .then(updatedBlog => {
+        response.json(updatedBlog.toJSON())
+      })
+    .catch(error => console.log(error.errmsg))
 })
+
 
 module.exports = blogsRouter

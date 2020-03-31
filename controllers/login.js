@@ -4,6 +4,7 @@ const loginRouter = require('express').Router()
 const User = require('../models/user')
 const secret = require('../utils/config')
 
+// Tällä tosiaan kirjautuminen
 loginRouter.post('/', async (request,response) => {
     const body = request.body
 
